@@ -48,10 +48,6 @@ let list1 = {
             title: 'Beveled Bezel'
         },
         {
-            id: 4,
-            title: 'Bezeled Bevel'
-        },
-        {
             id: 5,
             title: 'Seedless'
         }
@@ -76,7 +72,7 @@ let list2 = {
         },
         {
             id: 3,
-            title: 'testing can now commence.'
+            title: 'Testing can now commence.'
         }
     ]
 };
