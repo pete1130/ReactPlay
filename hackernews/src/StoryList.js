@@ -4,7 +4,7 @@ import Story from './Story';
 
 const StoryList = ({ stories }) => (
     <ol className="stories" start={1}>
-        {stories.map(story => (
+        {stories.map((story, index) => (
             <li key={story.id}>
                 <Story story={story} />
             </li>

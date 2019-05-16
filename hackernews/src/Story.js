@@ -15,7 +15,7 @@ const Story = ({ story }) => (
             {' | '}
             <a href={story.url}>hide</a>
             {' | '}
-            <a href={story.url}>{story.descendants} comments</a>
+            <a>{story.descendants} comments</a>
         </div>
     </span>
 );
