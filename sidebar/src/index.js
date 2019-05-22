@@ -18,33 +18,34 @@ class Layout extends React.Component {
 
         return (
             <div className="layout">
+                <Content
+                    sidebar={showSidebar}
+                    switchSidebar={this.toggleSidebar}
+                >
+                    Hey I'm the information on the content!
+                </Content>
+
                 {showSidebar && (
-                    <Sidebar onHide={this.toggleSidebar}>
-                        Some type of sidebar content
+                    <Sidebar hideSidebar={this.toggleSidebar}>
+                        Sidebar info for the win!
                     </Sidebar>
                 )}
-                <Content
-                    isSidebarVisible={showSidebar}
-                    onShowSidebar={this.toggleSidebar}
-                >
-                    Some content from Content here
-                </Content>
             </div>
         );
     }
 }
 
-const Content = ({ children, isSidebarVisible, onShowSidebar }) => (
+const Content = ({ children, sidebar, switchSidebar }) => (
     <div className="content">
         {children}
-        {!isSidebarVisible && <button onClick={onShowSidebar}>Show</button>}
+        {!sidebar && <button onClick={switchSidebar}>Show</button>}
     </div>
 );
 
-const Sidebar = ({ onHide, children }) => (
+const Sidebar = ({ children, hideSidebar }) => (
     <div className="sidebar">
         {children}
-        <button onClick={onHide}>Hide</button>
+        <button onClick={hideSidebar}>Hide</button>
     </div>
 );
 
