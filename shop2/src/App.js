@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.css';
 import Nav from './Nav';
-import ItemPage from './Items';
+import ItemPage from './ItemPage';
 import { items } from './static-data';
+import CartPage from './CartPage';
 
 class App extends React.Component {
     state = {
-        activeTab: 0
+        activeTab: 0,
+        cart: []
     };
 
     handleTabChange = index => {
@@ -15,13 +17,60 @@ class App extends React.Component {
         });
     };
 
+    handleAddToCart = item => {
+        this.setState({
+            cart: [...this.state.cart, item.id]
+        });
+    };
+
+    handleRemove = item => {
+        let index = this.state.cart.indexOf(item.id);
+
+        this.setState({
+            cart: [
+                ...this.state.cart.slice(0, index),
+                ...this.state.cart.slice(index + 1)
+            ]
+        });
+    };
+
+    renderCart() {
+        let countItems = this.state.cart.reduce((countItems, itemId) => {
+            countItems[itemId] = countItems[itemId] || 0;
+            countItems[itemId]++;
+            return countItems;
+        }, {});
+
+        let cartItems = Object.keys(countItems).map(itemId => {
+            let item = items.find(item => item.id === parseInt(itemId, 10));
+
+            return {
+                ...item,
+                count: countItems[itemId]
+            };
+        });
+
+        return (
+            <CartPage
+                items={cartItems}
+                onAddOne={this.handleAddToCart}
+                onRemoveOne={this.handleRemove}
+            />
+        );
+    }
+
     renderChosenTab() {
-        switch (this.state.tab) {
+        switch (this.state.activeTab) {
             default:
             case 0:
-                return <ItemPage items={items} />;
+                return (
+                    <ItemPage
+                        items={items}
+                        onAddToCart={this.handleAddToCart}
+                    />
+                );
             case 1:
-                return <span>Cart</span>;
+                return this.renderCart();
         }
     }
 
@@ -30,6 +79,7 @@ class App extends React.Component {
         return (
             <div className="App">
                 <Nav onTabChange={this.handleTabChange} activeTab={activeTab} />
+                <div>{this.state.cart.length} items</div>
                 <main className="App-content">{this.renderChosenTab()}</main>
             </div>
         );
