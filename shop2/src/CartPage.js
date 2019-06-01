@@ -3,8 +3,18 @@ import PropTypes from 'prop-types';
 import Item from './Item';
 import './CartPage.css';
 
+const EmptyCart = () => (
+    <div className="CartPage-empty">
+        Your cart is empty.
+        <br />
+        Why not add some expensive products to it?
+    </div>
+);
+
 function CartPage({ items, onRemoveOne, onAddOne }) {
-    return (
+    return items.length === 0 ? (
+        <EmptyCart />
+    ) : (
         <ul className="CartPage-items">
             {items.map(item => (
                 <li key={item.id} className="CartPage-item">
@@ -27,6 +37,11 @@ function CartPage({ items, onRemoveOne, onAddOne }) {
                     </Item>
                 </li>
             ))}
+
+            <li className="CartPage-item CartPage-total">
+                Total: $
+                {items.reduce((sum, item) => sum + item.count * item.price, 0)}
+            </li>
         </ul>
     );
 }

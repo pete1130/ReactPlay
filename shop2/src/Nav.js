@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Nav = ({ activeTab, onTabChange }) => (
+const Nav = ({ activeTab, onTabChange, items }) => (
     <nav className="App-nav">
         <ul>
             <li className={`App-nav-item ${activeTab === 0 && 'selected'}`}>

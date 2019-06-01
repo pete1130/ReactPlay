@@ -78,8 +78,11 @@ class App extends React.Component {
         let { activeTab } = this.state;
         return (
             <div className="App">
-                <Nav onTabChange={this.handleTabChange} activeTab={activeTab} />
-                <div>{this.state.cart.length} items</div>
+                <Nav
+                    onTabChange={this.handleTabChange}
+                    activeTab={activeTab}
+                    items={this.renderCart}
+                />
                 <main className="App-content">{this.renderChosenTab()}</main>
             </div>
         );
