@@ -26,8 +26,14 @@
 .footer {
     height: 200px;
     background-color: #d6e9fe; /* Light blue */
+    clear: both;
 }
 .page {
     width: 900px;
     margin: 0 auto;
+}
+.container {
+    background-color: #eaedf0;
+    overflow: hidden;
+    border: 1px solid red;
 }
