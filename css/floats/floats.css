@@ -24,16 +24,56 @@
 }
 
 .footer {
-    height: 200px;
     background-color: #d6e9fe; /* Light blue */
-    clear: both;
+    overflow: hidden;
 }
 .page {
     width: 900px;
     margin: 0 auto;
 }
 .container {
-    background-color: #eaedf0;
+    background-color: green;
     overflow: hidden;
     border: 1px solid red;
+}
+
+.column {
+    float: left;
+    width: 31%;
+    margin: 20px 1.15%;
+    height: 160px;
+    background-color: #b2d6ff;
+}
+
+.content {
+    padding: 20px;
+}
+
+.article-image {
+    float: left;
+    width: 300px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+.avatar {
+    float: left;
+    width: 60px;
+    height: 60px;
+    margin: 25px;
+    border-radius: 40px;
+    background-color: #d6e9fe;
+}
+
+.username {
+    margin-top: 30px;
+}
+
+.comment {
+    margin: 10px;
+    overflow: hidden; /* This is important */
 }
