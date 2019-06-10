@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { channels, people, createFakeActivity } from './static-data';
+import EmptyChatPane from './EmptyChatPane';
 
 //review messages.length
 function nextId(messages) {
@@ -24,67 +25,104 @@ export default class Root extends Component {
         selectedChannelId: null,
         selectedPersonId: null
     };
-}
 
-handlePersonSelected = personId => {
-    this.setState({
-        selectedPersonId: personId,
-        selectedChannelId: null
-    });
-};
-
-handleSentMessage = text => {
-    const { selectedChannelId, selectedPersonId } = this.state;
-
-    if (selectedChannelId) {
+    handleChannelSelected = channelId => {
         this.setState({
-            ...this.state,
-
-            messagesByChannelId: {
-                ...this.state.messagesByChannelId,
-                [selectedChannelId]: [
-                    ...this.state.messagesByChannelId[selectedChannelId],
-                    createMessages(
-                        text,
-                        nextId(
-                            this.state.messagesByChannelId[selectedChannelId]
-                        )
-                    )
-                ]
-            }
+            selectedChannelId: channelId,
+            selectedPersonId: null
         });
-    }
-};
+    };
 
-if (selectedPersonId) {
-    this.setState({
-        ...this.state,
-        messagesByPersonId: {
-            ...this.state.messagesByPersonId,
-            [selectedPersonId]: [
-                ...this.state.messagesByPersonId[selectedPersonId],
-                createMessage(
-                    text,
-                    nextId(this.state.messagesByPersonId[selectedPersonId])
-                )
-            ]
+    handlePersonSelected = personId => {
+        this.setState({
+            selectedPersonId: personId,
+            selectedChannelId: null
+        });
+    };
+
+    handleSentMessage = text => {
+        const { selectedChannelId, selectedPersonId } = this.state;
+
+        if (selectedChannelId) {
+            this.setState({
+                ...this.state,
+
+                messagesByChannelId: {
+                    ...this.state.messagesByChannelId,
+                    [selectedChannelId]: [
+                        ...this.state.messagesByChannelId[selectedChannelId],
+                        createMessages(
+                            text,
+                            nextId(
+                                this.state.messagesByChannelId[
+                                    selectedChannelId
+                                ]
+                            )
+                        )
+                    ]
+                }
+            });
         }
-    });
-}
 
-render() {
-    const { channels, people, selectedChannelId, selectedPersonId} = this.state;
+        if (selectedPersonId) {
+            this.setState({
+                ...this.state,
+                messagesByPersonId: {
+                    ...this.state.messagesByPersonId,
+                    [selectedPersonId]: [
+                        ...this.state.messagesByPersonId[selectedPersonId],
+                        createMessage(
+                            text,
+                            nextId(
+                                this.state.messagesByPersonId[selectedPersonId]
+                            )
+                        )
+                    ]
+                }
+            });
+        }
+    };
 
-    let messages = [];
-    let isSomethingSelected = false;
+    render() {
+        const {
+            channels,
+            people,
+            selectedChannelId,
+            selectedPersonId
+        } = this.state;
 
-    if (selectedChannelId) {
-        messages = this.state.messagesByChannelId[selectedChannelId];
-        isSomethingSelected = true;
-    }
+        let messages = [];
+        let isSomethingSelected = false;
 
-    if (selectedPersonId) {
-        messages = this.state.messagesByPersonId[selectedPersonId];
-        isSomethingSelected = true;
+        if (selectedChannelId) {
+            messages = this.state.messagesByChannelId[selectedChannelId];
+            isSomethingSelected = true;
+        }
+
+        if (selectedPersonId) {
+            messages = this.state.messagesByPersonId[selectedPersonId];
+            isSomethingSelected = true;
+        }
+
+        return (
+            <div className="container">
+                <SidebarPane
+                    channels={channels}
+                    people={people}
+                    onChannelSelected={this.handleChannelSelected}
+                    onPersonSelected={this.handlePersonSelected}
+                    selectedChannelId={selectedChannelId}
+                    selectedPersonId={selectedPersonId}
+                />
+                {isSomethingSelected ? (
+                    <ChatPane
+                        messages={messages}
+                        onSendMessages={this.handleSentMessage}
+                    />
+                ) : (
+                    <EmptyChatPane />
+                )}
+            </div>
+        );
     }
 }
