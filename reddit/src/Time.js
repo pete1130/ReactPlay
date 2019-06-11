@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-const computeTimeString = ({ time, isUnixTime }) => {
+const convertTime = (time, isUnixTime) => {
     if (isUnixTime) {
         return moment.unix(time).fromNow();
     } else {
@@ -11,7 +11,7 @@ const computeTimeString = ({ time, isUnixTime }) => {
 };
 
 const Time = ({ time, isUnixTime }) => {
-    return <span className="time">{computeTimeString(time, isUnixTime)}</span>;
+    return <span className="time">{convertTime(time, isUnixTime)}</span>;
 };
 
 Time.propTypes = {

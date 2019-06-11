@@ -24,11 +24,10 @@ export default class Reddit extends Component {
         });
     };
 
-    handleUpvote = postId => {
+    handleUpVote = postId => {
         this.setState({
             posts: {
                 ...this.state.posts,
-
                 [postId]: {
                     ...this.state.posts[postId],
                     score: this.state.posts[postId].score + 1
@@ -37,7 +36,7 @@ export default class Reddit extends Component {
         });
     };
 
-    handleDownvote = postId => {
+    handleDownVote = postId => {
         this.setState({
             posts: {
                 ...this.state.posts,
@@ -45,6 +44,19 @@ export default class Reddit extends Component {
                 [postId]: {
                     ...this.state.posts[postId],
                     score: this.state.posts[postId].score - 1
+                }
+            }
+        });
+    };
+
+    handleUpVote = postId => {
+        this.setState({
+            posts: {
+                ...this.state.posts,
+
+                [postId]: {
+                    ...this.state.posts[postId],
+                    score: this.state.posts[postId].score + 1
                 }
             }
         });
@@ -58,8 +70,8 @@ export default class Reddit extends Component {
         return (
             <RedditListing
                 posts={posts}
-                onUpvote={this.handleUpvote}
-                onDownvote={this.handleDownvote}
+                onDownVote={this.handleDownVote}
+                onUpVote={this.handleUpVote}
             />
         );
     }
