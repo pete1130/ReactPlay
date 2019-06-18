@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { channels, people, createFakeActivity } from './static-data';
-import EmptyChatPane from './EmptyChatPane';
 
-//review messages.length
 function nextId(messages) {
-    return messages.length ? messages[messages.length - 1].id + 1 : 0;
+    messages.length ? messages[messages.length - 1].id + 1 : 0;
 }
 
-function createMessage(text, messageId) {
+function createUserMessages(text, messageId) {
     return {
         id: messageId,
         userName: 'Myself',
-        text: text,
+        text,
         timestamp: new Date()
     };
 }
@@ -20,8 +18,8 @@ export default class Root extends Component {
     state = {
         channels,
         people,
-        messagesByChannelId: createFakeActivity(channels, 15),
-        messagesByPersonId: createFakeActivity(people, 5),
+        messagesByChannelId: createFakeActivity(channels, 7),
+        messagesByPersonId: createFakeActivity(people, 31),
         selectedChannelId: null,
         selectedPersonId: null
     };
@@ -35,12 +33,12 @@ export default class Root extends Component {
 
     handlePersonSelected = personId => {
         this.setState({
-            selectedPersonId: personId,
-            selectedChannelId: null
+            selectedChannelId: null,
+            selectedPersonId: personId
         });
     };
 
-    handleSentMessage = text => {
+    handleSentMessages = text => {
         const { selectedChannelId, selectedPersonId } = this.state;
 
         if (selectedChannelId) {
@@ -48,10 +46,11 @@ export default class Root extends Component {
                 ...this.state,
 
                 messagesByChannelId: {
-                    ...this.state.messagesByChannelId,
+                    ...this.messagesByChannelId,
+
                     [selectedChannelId]: [
                         ...this.state.messagesByChannelId[selectedChannelId],
-                        createMessages(
+                        createUserMessages(
                             text,
                             nextId(
                                 this.state.messagesByChannelId[
@@ -63,25 +62,25 @@ export default class Root extends Component {
                 }
             });
         }
-
-        if (selectedPersonId) {
-            this.setState({
-                ...this.state,
-                messagesByPersonId: {
-                    ...this.state.messagesByPersonId,
-                    [selectedPersonId]: [
-                        ...this.state.messagesByPersonId[selectedPersonId],
-                        createMessage(
-                            text,
-                            nextId(
-                                this.state.messagesByPersonId[selectedPersonId]
-                            )
-                        )
-                    ]
-                }
-            });
-        }
     };
+
+    if(selectedPersonId) {
+        this.setState({
+            ...this.state,
+
+            messagesByPersonId: {
+                ...this.state.messagesByPersonId,
+
+                [selectedPersonId]: [
+                    ...this.state.messagesByPersonId[selectedPersonId],
+                    createUserMessages(
+                        text,
+                        nextId(this.state.messagesByPersonId[selectedPersonId])
+                    )
+                ]
+            }
+        });
+    }
 
     render() {
         const {
@@ -92,7 +91,7 @@ export default class Root extends Component {
         } = this.state;
 
         let messages = [];
-        let isSomethingSelected = false;
+        let isSomethingSelected = true;
 
         if (selectedChannelId) {
             messages = this.state.messagesByChannelId[selectedChannelId];
@@ -117,7 +116,7 @@ export default class Root extends Component {
                 {isSomethingSelected ? (
                     <ChatPane
                         messages={messages}
-                        onSendMessages={this.handleSentMessage}
+                        onSendMessage={this.handleSentMessage}
                     />
                 ) : (
                     <EmptyChatPane />

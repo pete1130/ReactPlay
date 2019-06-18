@@ -14,50 +14,32 @@ const people = [
     { id: 6, name: 'Joe' }
 ];
 
-// function generateFakeMessages(count) {
-//     let messages = [];
-
-//     for (let i = 0; i < count; i++) {
-//         const userName = randomUser();
-//         messages.push({
-//             id: i,
-//             userName,
-//             text: `A message from ${userName}`,
-//             timestamp: new Date()
-//         });
-//     }
-//     return messages;
-// }
-
-function generateFakeMessagesWithMethods(count) {
-    return Array.from(
-        Array(count)
-            .keys()
-            .map(i => {
-                const userName = randomUser();
-                return {
-                    id: i,
-                    userName,
-                    text: `A message from ${userName}`,
-                    timestamp: new Date()
-                };
-            })
-    );
+function generateFakeMessages(numOfFakeMessages) {
+    return Array.from(Array(numOfFakeMessages))
+        .keys()
+        .map(i => {
+            let userName = randomUser();
+            return {
+                id: i,
+                userName,
+                text: `A message from ${userName}`,
+                timestamp: new Date()
+            };
+        });
 }
 
 function randomUser() {
     return people.map(person => person.name)[
-        Math.floor(Math.random() * 1000) % person.length
+        Math.floor(Math.random() * 1000) % people.length
     ];
 }
 
-//review maxMessages sources
-function createFakeActivity(channels, maxMessages) {
+function createFakeActivity(channels, numOfMaxMessages) {
     return channels.reduce((result, channel) => {
-        const rndNum = Math.floor(Math.random() * maxMessages);
-        result[channel.id] = generateFakeMessagesWithMethods(rndNum);
+        let rndNumOfMessages = Math.floor(Math.random() * numOfMaxMessages);
+        result[channel.id] = generateFakeMessages(rndNumOfMessages);
         return result;
     }, {});
 }
 
-export { channels, people, createFakeActivity };
+export { generateFakeMessages, randomUser, createFakeActivity };
